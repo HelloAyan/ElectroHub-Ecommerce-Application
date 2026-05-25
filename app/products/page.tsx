@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { SlidersHorizontal, X, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import StoreLayout from '@/components/layout/StoreLayout';
@@ -15,7 +15,7 @@ const SORT_OPTIONS = [
   { value: '-rating', label: 'Top Rated' },
 ];
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const dispatch = useAppDispatch();
   const { products, loading, pagination, filters } = useAppSelector(s => s.products);
   const searchParams = useSearchParams();
@@ -336,5 +336,17 @@ export default function ProductsPage() {
         </>
       )}
     </StoreLayout>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <ProductsPageContent />
+    </Suspense>
   );
 }
