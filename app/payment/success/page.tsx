@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, XCircle, ArrowRight, Package } from 'lucide-react';
+import { CheckCircle, ArrowRight, Package } from 'lucide-react';
 import StoreLayout from '@/components/layout/StoreLayout';
+import { Suspense } from 'react';
 
-function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const params = useSearchParams();
   const orderId = params.get('orderId');
 
@@ -33,4 +34,10 @@ function PaymentSuccessPage() {
   );
 }
 
-export default PaymentSuccessPage;
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" /></div>}>
+      <PaymentSuccessContent />
+    </Suspense>
+  );
+}
